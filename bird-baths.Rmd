@@ -1,0 +1,39 @@
+---
+title: "Bird Baths"
+author: "Wylie Hampson"
+date: "8/31/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(janitor)
+library(tidytuesdayR)
+library(lubridate)
+```
+
+## Read in the data
+
+```{r}
+tuesdata <- tidytuesdayR::tt_load(2021, week = 36)
+
+bird_baths <- tuesdata$bird_baths
+```
+
+## Group the data by whether or not it is coming from a rural area or an urban area
+
+```{r}
+bird_rural_urban <- bird_baths %>% 
+  group_by(bioregions) %>% 
+  summarize(total_birds = sum(bird_count), na.rm = TRUE)
+```
+
+## Plot the amount of birds by bioregions
+
+```{r}
+ggplot(data = bird_rural_urban, aes(x = bioregions, y = total_birds)) +
+  geom_point()
+```
+
+
